@@ -1,6 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
-
+import 'express-async-errors';
 import { currentUserRouter } from './routes/currentUser';
 import { signInRouter } from './routes/signin';
 import { signOutRouter } from './routes/signout';
@@ -22,7 +22,7 @@ const startApp = async () => {
     } catch(err) {
         console.error(err);
     }
-
+    
     app.listen(3000, () => {
         console.log('listening on port 3000');
     });
