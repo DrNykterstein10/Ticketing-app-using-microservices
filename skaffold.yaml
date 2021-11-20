@@ -14,6 +14,14 @@ build:
       docker:
         dockerfile: Dockerfile
       sync:
-        manual: 
-          - src: 'src/**/*.ts'
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+    - image: piyrai1/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.js"
             dest: .
