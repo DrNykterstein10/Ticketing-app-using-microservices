@@ -3,9 +3,8 @@ import { body } from "express-validator";
 import jwt from "jsonwebtoken";
 
 import { User } from "../models/user";
-import { BadRequestError } from "../errors/badRequestError";
+import { BadRequestError, validateRequest } from "@pr-ticketing-app/lib";
 import { PasswordService } from "../services/passwordService";
-import { validateRequest } from "../middleware/validateRequest";
 
 const router = express.Router();
 
@@ -27,7 +26,10 @@ router.post(
     }
 
     const storedPassword = existingUser.password;
-    const checkPassword = await PasswordService.compareHash(storedPassword, password);
+    const checkPassword = await PasswordService.compareHash(
+      storedPassword,
+      password
+    );
     if (!checkPassword) {
       throw new BadRequestError("Invalid password");
     }
