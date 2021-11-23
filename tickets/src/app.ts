@@ -1,6 +1,13 @@
 import express from "express";
 import "express-async-errors";
 import cookieSession from "cookie-session";
+import {
+  NotFoundError,
+  errorHandler,
+  currentUser,
+} from "@pr-ticketing-app/lib";
+import { createTicketRouter } from "./routes/createTicket";
+import { getTicketByIdRouter } from "./routes/getTicketById";
 
 const app = express();
 app.set("trust proxy", true);
@@ -12,5 +19,15 @@ app.use(
     secure: process.env.NODE_ENV !== "test",
   })
 );
+app.use(currentUser);
+
+app.use(createTicketRouter);
+app.use(getTicketByIdRouter);
+
+app.all("*", async (req, res) => {
+  throw new NotFoundError();
+});
+
+app.use(errorHandler);
 
 export { app };
