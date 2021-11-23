@@ -8,6 +8,8 @@ import {
 } from "@pr-ticketing-app/lib";
 import { createTicketRouter } from "./routes/createTicket";
 import { getTicketByIdRouter } from "./routes/getTicketById";
+import { getTicketsRouter } from "./routes/getTickets";
+import { updateTicketRouter } from "./routes/updateTicket";
 
 const app = express();
 app.set("trust proxy", true);
@@ -23,6 +25,8 @@ app.use(currentUser);
 
 app.use(createTicketRouter);
 app.use(getTicketByIdRouter);
+app.use(getTicketsRouter);
+app.use(updateTicketRouter);
 
 app.all("*", async (req, res) => {
   throw new NotFoundError();
