@@ -6,7 +6,10 @@ import {
   requireAuth,
   NotAuthorizedError,
 } from "@pr-ticketing-app/lib";
+
 import { Ticket } from "../models/ticket";
+import { TicketUpdatedPublisher } from "../events/publishers/ticketUpdatedPublisher";
+import { natsWrapper } from "../natsWrapper";
 
 const Router = express.Router();
 
@@ -39,6 +42,13 @@ Router.put(
     });
 
     await existingTicket.save();
+
+    new TicketUpdatedPublisher(natsWrapper.client).publish({
+      id: existingTicket.id,
+      title: existingTicket.title,
+      price: existingTicket.price,
+      userId: existingTicket.userId,
+    });
 
     return res.send(existingTicket);
   }
